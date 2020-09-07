@@ -18,25 +18,21 @@ object Main {
     //    true
   }
 
-  import cats.implicits._
-
   def wordPattern(pattern: String, str: String): Boolean = {
     val words = str.split(" ")
     if (pattern.length == words.length) {
-      val zipped = pattern.zip(words).toList
-      val res = zipped.foldLeftM((Map.empty[Char, String], Map.empty[String, Char])) {
-        case ((char2word, word2char), (char, word)) =>
+      val zipped = pattern.zip(words)
+      val (_, _, res) = zipped.foldLeft((Map.empty[Char, String], Map.empty[String, Char], true)) {
+        case ((char2word, word2char, res), (char, word)) =>
           val word1 = char2word.get(char)
           val char1 = word2char.get(word)
           if (word1.isEmpty && char1.isEmpty) {
-            Option((char2word + (char -> word), word2char + (word -> char)))
-          } else if (word1.contains(word) && char1.contains(char)) {
-            Option((char2word, word2char))
+            (char2word + (char -> word), word2char + (word -> char), res)
           } else {
-            None
+            (char2word, word2char, res && word1.contains(word) && char1.contains(char))
           }
       }
-      res.nonEmpty
+      res
     } else {
       false
     }
