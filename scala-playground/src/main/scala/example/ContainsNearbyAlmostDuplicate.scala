@@ -17,8 +17,4 @@ object ContainsNearbyAlmostDuplicate {
       .headOption.nonEmpty
   }
 
-
-  def main(args: Array[String]) = {
-    println(containsNearbyAlmostDuplicate(Array(-2147483648, 2147483647), k = 1, t = 1))
-  }
 }

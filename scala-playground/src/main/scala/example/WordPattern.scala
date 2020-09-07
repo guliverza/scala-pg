@@ -21,10 +21,4 @@ object WordPattern {
     }
   }
 
-
-  def main(args: Array[String]) = {
-    println(wordPattern("abba", "dog dog dog dog"))
-    println(wordPattern("abba", "dog cat cat dog"))
-  }
-
 }
