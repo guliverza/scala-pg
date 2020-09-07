@@ -1,9 +1,19 @@
 package leetcode.september2020.week1
 
 object WordPattern {
+
+  def wordPatternSimple(pattern: String, str: String): Boolean = {
+    val words = str.split(' ')
+    (words.length == pattern.length) && {
+      val (charsDistinct, wordsDistinct) = (pattern zip words).distinct.unzip
+      (charsDistinct.length == charsDistinct.distinct.length) &&
+        (wordsDistinct.length == wordsDistinct.distinct.length)
+    }
+  }
+
   def wordPattern(pattern: String, str: String): Boolean = {
     val words = str.split(" ")
-    if (pattern.length == words.length) {
+    (pattern.length == words.length) && {
       val zipped = pattern.zip(words)
       val (_, _, res) = zipped.foldLeft((Map.empty[Char, String], Map.empty[String, Char], true)) {
         case ((char2word, word2char, res), (char, word)) =>
@@ -16,8 +26,6 @@ object WordPattern {
           }
       }
       res
-    } else {
-      false
     }
   }
 
