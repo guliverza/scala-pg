@@ -1,6 +1,6 @@
-package example
+package leetcode.september2020.week1
 
-import example.ContainsNearbyAlmostDuplicate.containsNearbyAlmostDuplicate
+import leetcode.september2020.week1.ContainsNearbyAlmostDuplicate.containsNearbyAlmostDuplicate
 import org.scalatest._
 
 class ContainsNearbyAlmostDuplicateSpec extends FlatSpec with Matchers {

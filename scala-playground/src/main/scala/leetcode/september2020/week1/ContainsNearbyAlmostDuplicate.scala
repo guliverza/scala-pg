@@ -1,4 +1,4 @@
-package example
+package leetcode.september2020.week1
 
 object ContainsNearbyAlmostDuplicate {
 

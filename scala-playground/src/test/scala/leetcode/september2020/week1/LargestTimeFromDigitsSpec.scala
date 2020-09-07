@@ -1,5 +1,5 @@
-package example
-import example.LargestTimeFromDigits.largestTimeFromDigits
+package leetcode.september2020.week1
+import leetcode.september2020.week1.LargestTimeFromDigits.largestTimeFromDigits
 import org.scalatest._
 
 class LargestTimeFromDigitsSpec extends FlatSpec with Matchers {

@@ -1,4 +1,4 @@
-package example
+package leetcode.september2020.week1
 import org.scalatest._
 
 class WordPatternSpec extends FlatSpec with Matchers{
