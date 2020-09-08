@@ -19,10 +19,14 @@ object SumRootToLeaf {
   }
 
   def infixTraverse(sum: Int)(node: TreeNode): List[Int] = {
-    val left = Option(node.left).map(infixTraverse(sum * 2 + node.value)).getOrElse(Nil)
-    val right = Option(node.right).map(infixTraverse(sum * 2 + node.value)).getOrElse(Nil)
-    if (left.isEmpty && right.isEmpty) List(sum * 2 + node.value)
-    else left ++ right
+    val result = sum * 2 + node.value
+    if (node.isLeaf) {
+      List(result)
+    } else {
+      val left = Option(node.left).map(infixTraverse(result)).getOrElse(Nil)
+      val right = Option(node.right).map(infixTraverse(result)).getOrElse(Nil)
+      left ++ right
+    }
   }
 
 }
