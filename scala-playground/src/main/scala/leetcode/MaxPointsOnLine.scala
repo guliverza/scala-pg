@@ -28,8 +28,8 @@ object MaxPointsOnLine {
           (One, (b / a).prec, (c / a).prec)
         }
       }
-      val groupedPointsPerLine = lines.groupBy { case (a, b, c) => (a, b, c) }
-      val equalPoints = points.count(p2 => p1 == p2 && p1.ne(p2))
+      val groupedPointsPerLine = lines.groupBy(abc => abc)
+      val equalPoints = groupedPointsPerLine.getOrElse((Zero, Zero, Zero), Nil).length
       val ints = groupedPointsPerLine.map {
         case ((Zero, Zero, Zero), lines) => lines.length
         case (_, lines) => lines.length + equalPoints
