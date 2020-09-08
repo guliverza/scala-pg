@@ -27,7 +27,7 @@ object ClosestPalindrome {
     } map (x => mirror(x.toString).toLong)
     val best = (palindroms1 ++ palindroms2).fold(input) {
       case (res, `input`) => res
-      case (`input`, res1) if res1 != input => res1
+      case (`input`, res1) => res1
       case (res, res1) =>
         val diff = math.abs(res - input)
         val diff1 = math.abs(res1 - input)
