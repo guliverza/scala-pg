@@ -1,6 +1,7 @@
 package leetcode.september2020.week1
 
-import leetcode.september2020.week1.TraverseTreeAndMergeArrays.{TreeNode, getAllElements}
+import leetcode.september2020.common.TreeNode
+import leetcode.september2020.week1.TraverseTreeAndMergeArrays.getAllElements
 import org.scalatest._
 
 class TraverseTreeAndMergeArraysSpec extends FlatSpec with Matchers {

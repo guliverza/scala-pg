@@ -1,9 +1,8 @@
 package leetcode.september2020.week1
 
-object TraverseTreeAndMergeArrays {
+import leetcode.september2020.common.TreeNode
 
-  // this is from LeetCode input data :/
-  case class TreeNode(value: Int = 0, left: TreeNode = null, right: TreeNode = null)
+object TraverseTreeAndMergeArrays {
 
   def getAllElements(root1: TreeNode, root2: TreeNode): List[Int] = {
     val a1 = Option(root1).map(infixTraverse).getOrElse(Nil)
