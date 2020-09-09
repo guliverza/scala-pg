@@ -2,8 +2,9 @@ package leetcode
 
 import leetcode.MaxPointsOnLine.maxPoints
 import org.scalatest._
-
-class MaxPointsOnLineSpec extends FlatSpec with Matchers {
+import flatspec._
+import matchers._
+class MaxPointsOnLineSpec extends AnyFlatSpec with should.Matchers {
   "MaxPointsOnLine" must "find lines" in {
     maxPoints(Array(Array(1, 1), Array(1, 1), Array(2, 2), Array(2, 2))) should be(4)
     maxPoints(Array(Array(0, 0), Array(1, 1), Array(1, -1))) should be(2)

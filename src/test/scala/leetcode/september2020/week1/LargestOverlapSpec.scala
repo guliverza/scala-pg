@@ -2,8 +2,10 @@ package leetcode.september2020.week1
 
 import leetcode.september2020.week1.LargestOverlap.largestOverlap
 import org.scalatest._
+import flatspec._
+import matchers._
 
-class LargestOverlapSpec extends FlatSpec with Matchers {
+class LargestOverlapSpec extends AnyFlatSpec with should.Matchers {
   "LargestOverlap" must "..." in {
     val A = Array(
       Array(1, 1, 0),
@@ -13,10 +15,10 @@ class LargestOverlapSpec extends FlatSpec with Matchers {
       Array(0, 0, 0),
       Array(0, 1, 1),
       Array(0, 0, 1))
-    largestOverlap(A, B) should be (3)
+    largestOverlap(A, B) should be(3)
     val A1 = Array(Array(1))
-    val B1 = Array( Array(1))
-    largestOverlap(A1, B1) should be (1)
+    val B1 = Array(Array(1))
+    largestOverlap(A1, B1) should be(1)
   }
 
 }

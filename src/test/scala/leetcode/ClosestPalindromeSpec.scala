@@ -2,8 +2,9 @@ package leetcode
 
 import leetcode.ClosestPalindrome.nearestPalindromic
 import org.scalatest._
-
-class ClosestPalindromeSpec extends FlatSpec with Matchers {
+import flatspec._
+import matchers._
+class ClosestPalindromeSpec extends AnyFlatSpec with should.Matchers {
   "ClosestPalindrome" must "find lines" in {
     nearestPalindromic("123") should be("121")
     nearestPalindromic("1") should be("0")
