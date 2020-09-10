@@ -22,14 +22,16 @@ object BullsAndCows {
       case ((guessWithoutMatches, cows), digit) =>
         val indexOf = guessWithoutMatches.indexOf(digit)
         if (indexOf >= 0) {
-        ({
-          val (before, atAndAfter) = guessWithoutMatches.splitAt(indexOf)
-          before ++ atAndAfter.drop(1)
-        }, cows + 1)
-      } else {
-        (guessWithoutMatches, cows)
-      }
+          (removeElementAt(guessWithoutMatches, indexOf), cows + 1)
+        } else {
+          (guessWithoutMatches, cows)
+        }
     }
     s"${bulls}A${cows}B"
+  }
+
+  private def removeElementAt[A](list: IndexedSeq[A], indexOf: Int) = {
+    val (before, atAndAfter) = list.splitAt(indexOf)
+    before ++ atAndAfter.drop(1)
   }
 }
