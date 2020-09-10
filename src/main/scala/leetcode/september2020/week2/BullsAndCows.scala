@@ -17,21 +17,8 @@ object BullsAndCows {
 
   def getHint(secret: String, guess: String): String = {
     val bulls = secret.zip(guess).count { case (s, g) => s == g }
-    val (secretWithoutBulls, guessWithoutBulls) = secret.zip(guess).filter { case (s, g) => s != g }.unzip
-    val (_, cows) = secretWithoutBulls.foldLeft((guessWithoutBulls, 0)) {
-      case ((guessWithoutMatches, cows), digit) =>
-        val indexOf = guessWithoutMatches.indexOf(digit)
-        if (indexOf >= 0) {
-          (removeElementAt(guessWithoutMatches, indexOf), cows + 1)
-        } else {
-          (guessWithoutMatches, cows)
-        }
-    }
+    val cows = secret.toSeq.intersect(guess).length - bulls
     s"${bulls}A${cows}B"
   }
 
-  private def removeElementAt[A](list: IndexedSeq[A], indexOf: Int) = {
-    val (before, atAndAfter) = list.splitAt(indexOf)
-    before ++ atAndAfter.drop(1)
-  }
 }
