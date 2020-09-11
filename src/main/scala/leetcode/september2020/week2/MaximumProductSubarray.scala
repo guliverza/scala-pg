@@ -10,7 +10,7 @@ object MaximumProductSubarray {
         if (n > 0) {
           (maxEndingHere * n, math.min(1, minEndingHere * n), math.max(max, maxEndingHere * n))
         } else if (n == 0) {
-          (1, 1, math.max(max, maxEndingHere * n))
+          (1, 1, math.max(max, 0))
         } else {
           (math.max(1, minEndingHere * n), maxEndingHere * n, math.max(max, minEndingHere * n))
         }
