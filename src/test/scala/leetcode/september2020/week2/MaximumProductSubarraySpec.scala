@@ -1,6 +1,5 @@
 package leetcode.september2020.week2
 
-import jdk.internal.loader.Resource
 import leetcode.september2020.week2.MaximumProductSubarray.maxProduct
 import org.scalatest.flatspec._
 import org.scalatest.matchers._
