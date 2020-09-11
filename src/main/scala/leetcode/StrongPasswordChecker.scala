@@ -1,6 +1,7 @@
 package leetcode
 
 object StrongPasswordChecker {
+  val MaxLength = 20
 
   def strongPasswordChecker(s: String): Int = {
     val required = Seq(
@@ -8,18 +9,21 @@ object StrongPasswordChecker {
       s.exists(c => c.isLetter && c.isUpper),
       s.exists(c => c.isDigit)).count(b => !b)
     val anyToAdd = if (s.length < 6) 6 - s.length else 0
-    val extra = if (s.length > 20) s.length - 20 else 0
-    val toRemove = if (s.length >= 3) split(s).map(word => word.length - 2).sum else 0
-    val toSplit = if (s.length >= 3) split(s).map(word => word.length / 3).sum else 0
-    val toRemoveOrSplit = if (toSplit > 0 && math.max(anyToAdd, anyToAdd) > 0)
+    val extra = if (s.length > MaxLength) s.length - MaxLength else 0
+    val oneLetterWords = split(s)
+    val toRemove = if (s.length >= 3) oneLetterWords.map(word => word.length - 2).sum else 0
+    val toReplace = if (s.length >= 3) oneLetterWords.map(word => word.length / 3).sum else 0
+    val onlyOneLetterBulgeOut = oneLetterWords.exists(word => word.length % 3 == 0)
 
-    println(required, anyToAdd, toRemove, toSplit, extra)
+    val toRemoveOrSplit =
+      (Some(math.abs(toReplace - anyToAdd)).filter(_ => toReplace + s.length <= MaxLength) ++
+        Some(toReplace + extra) ++
+        Some(toReplace + extra - 1).filter(_ => onlyOneLetterBulgeOut && extra > 0) ++
+        Some(toRemove - extra)).min
+    println(s"required=$required, anyToAdd=$anyToAdd, toRemove=$toRemove, toReplace=$toReplace, " +
+      s"extra=$extra, toRemoveOrSplit=$toRemoveOrSplit, onlyOneLetterBulgeOut=$onlyOneLetterBulgeOut")
 
-
-    if (required == 0 || extra == 0)
-      Seq(required, anyToAdd, toSplit, toRemove, extra).max
-    else
-      Seq(required + extra, anyToAdd, toSplit, toRemove, extra).max
+    Seq(required + extra, anyToAdd, extra, toRemoveOrSplit).max
   }
 
   def split(s: String): List[String] = {

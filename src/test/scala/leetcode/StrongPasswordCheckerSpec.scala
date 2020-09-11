@@ -11,5 +11,6 @@ class StrongPasswordCheckerSpec extends AnyFlatSpec with should.Matchers {
     strongPasswordChecker("ABABABABABABABABABAB1") shouldBe 2
     strongPasswordChecker("aaaaaaaaaaaaaaaaaaaaa") shouldBe 7
     strongPasswordChecker("aaa123") shouldBe 1
+    strongPasswordChecker("aaaaabbbb1234567890ABA") shouldBe 3
   }
 }
