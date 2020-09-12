@@ -11,5 +11,6 @@ class CombinationSumIIISpec extends AnyFlatSpec with should.Matchers {
     combinationSum3(3, 7) shouldBe List(List(1, 2, 4))
     combinationSum3(2, 18) shouldBe Nil
     combinationSum3(2, 6) shouldBe List(List(1, 5), List(2, 4))
+    combinationSum3(9, 4) shouldBe Nil
   }
 }

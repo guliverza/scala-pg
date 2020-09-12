@@ -11,7 +11,6 @@ object CombinationSumIII {
    */
 
   def combinationSum3(k: Int, n: Int): List[List[Int]] = {
-    (1 to math.min(9, n - k + 1)).toList.combinations(k).filter(_.sum == n).toList
+    (1 to math.min(9, n - (1 until k).sum)).toList.combinations(k).filter(_.sum == n).toList
   }
-
 }
