@@ -4,6 +4,7 @@ import leetcode.StrongPasswordChecker.strongPasswordChecker
 import org.scalatest._
 import flatspec._
 import matchers._
+
 class StrongPasswordCheckerSpec extends AnyFlatSpec with should.Matchers {
   "StrongPasswordChecker" must "check pass" in {
     strongPasswordChecker("1111111111") shouldBe 3
