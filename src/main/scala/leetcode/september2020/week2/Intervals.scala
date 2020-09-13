@@ -12,11 +12,11 @@ object Intervals {
     val intervals = _intervals.map(Interval(_)).toList
     val newInterval = Interval(_newInterval)
 
-    val (before, after) = intervals.span(_.before(newInterval))
+    val (head, after) = intervals.span(_.before(newInterval))
     val (in, tail) = after.span(_.intersects(newInterval))
     val middle = Interval(
-      from = math.min(newInterval.from, in.headOption.map(_.from).getOrElse(newInterval.from)),
-      to = math.max(newInterval.to, in.lastOption.map(_.to).getOrElse(newInterval.to)))
-    ((before :+ middle) ++ tail).map(_.asArray).toArray
+      from = (in.headOption.map(_.from).toSeq :+ newInterval.from).min,
+      to = (in.lastOption.map(_.to).toSeq :+ newInterval.to).max)
+    ((head :+ middle) ++ tail).map(_.asArray).toArray
   }
 }
