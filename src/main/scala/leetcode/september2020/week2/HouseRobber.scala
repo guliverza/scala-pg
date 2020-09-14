@@ -11,24 +11,26 @@ object HouseRobber {
    * determine the maximum amount of money you can rob tonight without alerting the police.
    */
 
-  val RobPattern = List((0, 2, 4), (0, 3, 5), (0, 2, 5), (0, 3, 6))
+  val WithPatterns = Seq(Seq(0, 2, 4, 6), Seq(0, 3, 5), Seq(0, 2, 5), Seq(0, 3, 6))
+  val WOPatterns = Seq(Seq(1, 3, 5), Seq(1, 4, 6), Seq(1, 3, 6))
 
   def rob(nums: Array[Int]): Int = {
+
     def getOrZero(i: Int) = if (i < nums.length) nums(i) else 0
 
-    val (sum, _) = nums.zipWithIndex.foldLeft((0, 1)) {
-      case ((sum, skipped), (current, i)) if skipped > 0 =>
-        val withCurrent = RobPattern.map { case (r1, r2, r3) =>
-          getOrZero(i + r1) + getOrZero(i + r2) + getOrZero(i + r3) }.max
-        val woCurrent = RobPattern.map { case (r1, r2, r3) =>
-          getOrZero(i + r1 + 1) + getOrZero(i + r2 + 1) + getOrZero(i + r3 + 1) }.max
-        if (withCurrent >= woCurrent || skipped  >= 2) {
-          (sum + current, 0)
+    val (sum, _) = nums.zipWithIndex.foldLeft((0, false)) {
+      case ((sum, false), (current, i)) =>
+        def robPattern(patterns: Seq[Seq[Int]]) = patterns.map(_.map { house => getOrZero(i + house) }.sum).max
+
+        val withCurrent = robPattern(WithPatterns)
+        val woCurrent = robPattern(WOPatterns)
+        if (withCurrent >= woCurrent) {
+          (sum + current, true)
         } else {
-          (sum, skipped + 1)
+          (sum, false)
         }
-      case ((sum, skipped), _) =>
-        (sum, skipped + 1)
+      case ((sum, true), _) =>
+        (sum, false)
     }
     sum
   }
