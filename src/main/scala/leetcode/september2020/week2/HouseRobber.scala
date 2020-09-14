@@ -11,28 +11,48 @@ object HouseRobber {
    * determine the maximum amount of money you can rob tonight without alerting the police.
    */
 
-  val WithPatterns = Seq(Seq(0, 2, 4, 6), Seq(0, 3, 5), Seq(0, 2, 5), Seq(0, 3, 6))
-  val WOPatterns = Seq(Seq(1, 3, 5), Seq(1, 4, 6), Seq(1, 3, 6))
+  val RobPatterns = Seq(
+    Seq(0, 2, 4, 6, 8, 10),
+    Seq(0, 2, 4, 6, 9),
+    Seq(0, 2, 4, 7, 9),
+    Seq(0, 2, 4, 7, 10),
+    Seq(0, 2, 5, 7, 9),
+    Seq(0, 2, 5, 7, 10),
+    Seq(0, 2, 5, 8, 10),
+    Seq(0, 3, 5, 7, 9),
+    Seq(0, 3, 5, 7, 10),
+    Seq(0, 3, 5, 8, 10),
+    Seq(0, 3, 6, 8, 10),
+    Seq(0, 3, 6, 9))
+  val max = RobPatterns.flatten.max
 
   def rob(nums: Array[Int]): Int = {
-
     def getOrZero(i: Int) = if (i < nums.length) nums(i) else 0
 
-    val (sum, _) = nums.zipWithIndex.foldLeft((0, false)) {
-      case ((sum, false), (current, i)) =>
-        def robPattern(patterns: Seq[Seq[Int]]) = patterns.map(_.map { house => getOrZero(i + house) }.sum).max
-
-        val withCurrent = robPattern(WithPatterns)
-        val woCurrent = robPattern(WOPatterns)
+    val (sum, _) = nums.zipWithIndex.foldLeft((0, 1)) {
+      case ((sum, skipped), (current, i)) if skipped > 0 =>
+        val withCurrent = RobPatterns.map(_.map { house => getOrZero(i + house) }.sum).max
+        val woCurrent = RobPatterns.map(_.collect { case house if house < max => getOrZero(i + house + 1) }.sum).max
         if (withCurrent >= woCurrent) {
-          (sum + current, true)
+          (sum + current, 0)
         } else {
-          (sum, false)
+          (sum, skipped + 1)
         }
-      case ((sum, true), _) =>
-        (sum, false)
+      case ((sum, skipped), _) =>
+        (sum, skipped + 1)
     }
     sum
   }
 
+  /**
+   * Slow brute force version
+   */
+  def robFullSearch(moneys: List[Int]): Int = {
+    moneys match {
+      case Nil => 0
+      case head :: Nil => head
+      case (head :: second :: Nil) => math.max(head, second)
+      case (head :: second :: tail) => math.max(head + robFullSearch(tail), second + robFullSearch(tail.tail))
+    }
+  }
 }
