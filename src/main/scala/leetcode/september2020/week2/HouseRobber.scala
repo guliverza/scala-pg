@@ -11,37 +11,17 @@ object HouseRobber {
    * determine the maximum amount of money you can rob tonight without alerting the police.
    */
 
-  val RobPatterns = Seq(
-    Seq(0, 2, 4, 6, 8, 10),
-    Seq(0, 2, 4, 6, 9),
-    Seq(0, 2, 4, 7, 9),
-    Seq(0, 2, 4, 7, 10),
-    Seq(0, 2, 5, 7, 9),
-    Seq(0, 2, 5, 7, 10),
-    Seq(0, 2, 5, 8, 10),
-    Seq(0, 3, 5, 7, 9),
-    Seq(0, 3, 5, 7, 10),
-    Seq(0, 3, 5, 8, 10),
-    Seq(0, 3, 6, 8, 10),
-    Seq(0, 3, 6, 9))
-  val max = RobPatterns.flatten.max
-
   def rob(nums: Array[Int]): Int = {
-    def getOrZero(i: Int) = if (i < nums.length) nums(i) else 0
-
-    val (sum, _) = nums.zipWithIndex.foldLeft((0, 1)) {
-      case ((sum, skipped), (current, i)) if skipped > 0 =>
-        val withCurrent = RobPatterns.map(_.map { house => getOrZero(i + house) }.sum).max
-        val woCurrent = RobPatterns.map(_.collect { case house if house < max => getOrZero(i + house + 1) }.sum).max
-        if (withCurrent >= woCurrent) {
-          (sum + current, 0)
-        } else {
-          (sum, skipped + 1)
-        }
-      case ((sum, skipped), _) =>
-        (sum, skipped + 1)
+    if (nums.length <= 2) {
+      nums.max
+    } else {
+      val (_, dp2) = nums.drop(2).foldLeft((nums(0), nums.take(2).max)) {
+        case ((dp0, dp1), num) =>
+          val dp2 = math.max(dp0 + num, dp1)
+          (dp1, dp2)
+      }
+      dp2
     }
-    sum
   }
 
   /**
