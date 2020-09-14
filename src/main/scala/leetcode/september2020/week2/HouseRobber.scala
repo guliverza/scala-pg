@@ -12,13 +12,13 @@ object HouseRobber {
    */
 
   def rob(nums: Array[Int]): Int = {
-    if (nums.length <= 2) {
+    if (nums.length == 0) {
+      0
+    } else if (nums.length <= 2) {
       nums.max
     } else {
       val (_, dp2) = nums.drop(2).foldLeft((nums(0), nums.take(2).max)) {
-        case ((dp0, dp1), num) =>
-          val dp2 = math.max(dp0 + num, dp1)
-          (dp1, dp2)
+        case ((dp0, dp1), num) => (dp1, math.max(dp0 + num, dp1))
       }
       dp2
     }
