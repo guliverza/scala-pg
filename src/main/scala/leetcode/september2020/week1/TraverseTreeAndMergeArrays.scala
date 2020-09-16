@@ -20,8 +20,8 @@ object TraverseTreeAndMergeArrays {
   }
 
   def infixTraverse(node: TreeNode): List[Int] = {
-    val left: List[Int] = Option(node.left).map(infixTraverse).getOrElse(Nil)
-    val right: List[Int] = Option(node.right).map(infixTraverse).getOrElse(Nil)
+    val left: List[Int] = node.left.map(infixTraverse).getOrElse(Nil)
+    val right: List[Int] = node.right.map(infixTraverse).getOrElse(Nil)
     (left :+ node.value) ++ right
   }
 

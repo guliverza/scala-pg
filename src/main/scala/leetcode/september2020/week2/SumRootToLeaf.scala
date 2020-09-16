@@ -23,8 +23,8 @@ object SumRootToLeaf {
     if (node.isLeaf) {
       List(result)
     } else {
-      val left = Option(node.left).map(infixTraverse(result)).getOrElse(Nil)
-      val right = Option(node.right).map(infixTraverse(result)).getOrElse(Nil)
+      val left = node.left.map(infixTraverse(result)).getOrElse(Nil)
+      val right = node.right.map(infixTraverse(result)).getOrElse(Nil)
       left ++ right
     }
   }
