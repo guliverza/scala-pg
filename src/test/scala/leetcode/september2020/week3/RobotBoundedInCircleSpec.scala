@@ -1,7 +1,5 @@
-package leetcode.september2020.week2
+package leetcode.september2020.week3
 
-import leetcode.september2020.week2.BullsAndCows.getHint
-import leetcode.september2020.week3.RobotBoundedInCircle
 import org.scalatest.flatspec._
 import org.scalatest.matchers._
 

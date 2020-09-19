@@ -27,7 +27,7 @@ object SequentialDigits {
       }
     }
 
-    override def hasNext: Boolean = currentNumber <= to && to != Int.MaxValue
+    override def hasNext: Boolean = currentNumber <= to && currentNumber != Int.MaxValue
 
     override def next(): Int = {
       val result = currentNumber
@@ -51,7 +51,7 @@ object SequentialDigits {
     else
       Int.MaxValue
 
-    def makeStep(len: Int) = ("1" * len).mkString("").toInt
+    def makeStep(len: Int): Int = ("1" * len).mkString("").toInt
   }
 
 }
