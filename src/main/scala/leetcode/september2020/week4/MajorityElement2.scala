@@ -31,27 +31,25 @@ object MajorityElement2 {
     if (nums.length <= 2) {
       nums.toSet.toList
     } else {
-      val (cand1, count1, cand2, count2) = nums.foldLeft((0, 0, 0, 0)) {
-        case ((cand1, count1, cand2, count2), a) =>
-          val res = if (cand1 == a) {
-            (a, count1 + 1, cand2, count2)
-          } else if (cand2 == a) {
-            (cand1, count1, a, count2 + 1)
-          } else if (count1 <= 1 && count2 > 0) {
-            (a, 1, cand2, count2)
-          } else if (count2 <= 1) {
-            (cand1, count1, a, 1)
-          } else if (count1 <= count2) {
-            (cand1, count1 - 1, cand2, count2)
+      val (a, countA, b, countB) = nums.foldLeft((0, 0, 0, 0)) {
+        case ((a, countA, b, countB), n) =>
+          val res = if (a == n) {
+            (n, countA + 1, b, countB)
+          } else if (b == n) {
+            (a, countA, n, countB + 1)
+          } else if (countA == 0) {
+            (n, 1, b, countB)
+          } else if (countB == 0) {
+            (a, countA, n, 1)
           } else {
-            (cand1, count1, cand2, count2 - 1)
+            (a, countA - 1, b, countB - 1)
           }
-          println(s"$a => $res")
+          println(s"$n => $res")
           res
       }
-      val candidates = List((cand1, count1), (cand2, count2))
-      println(candidates)
-      candidates.collect { case (cand, count) if count > 1 => cand }
+      List((a, countA), (b, countB))
+        .collect { case (a, _) if nums.count(_ == a) > nums.length/3 => a }
+        .distinct
     }
   }
 
