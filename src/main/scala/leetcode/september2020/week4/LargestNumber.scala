@@ -1,5 +1,7 @@
 package leetcode.september2020.week4
 
+import scala.annotation.tailrec
+
 object LargestNumber {
   def largestNumber(nums: Array[Int]): String = {
     val res = largest(nums.toList.map(_.toString), 9, "")
@@ -7,6 +9,7 @@ object LargestNumber {
     else res
   }
 
+  @tailrec
   def largest(nums: List[String], digit: Int, result: String): String = {
     //    println(digit, result, nums)
     if (nums.isEmpty) {
