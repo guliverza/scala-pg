@@ -18,26 +18,16 @@ object GasStation {
    * Each element in the input arrays is a non-negative integer.
    */
   def canCompleteCircuit(gas: Array[Int], cost: Array[Int]): Int = {
-    val count = gas.length
-
-    @tailrec
-    def travel(start: Int, current: Int, tank: Int): Int = {
-      val next = (current + 1) % count
-      if (tank + gas(current) >= cost(current)) {
-        if (next == start) {
-          start
-        } else {
-          travel(start, next, tank + gas(current) - cost(current))
-        }
-      } else {
-        -1
-      }
-    }
-
     if (gas.sum >= cost.sum) {
-      (0 until count).find { i =>
-        travel(i, i, 0) != -1
-      }.getOrElse(-1)
+      val (start, _) = (0 until gas.length).foldLeft((0, 0)) { case ((start, tank), n) =>
+        val newTank = tank + gas(n) - cost(n)
+        if (newTank >= 0) {
+          (start, newTank)
+        } else {
+          (n+1, 0)
+        }
+      }
+      start
     } else {
       -1
     }
