@@ -11,7 +11,6 @@ object LargestNumber {
 
   @tailrec
   def largest(nums: List[String], digit: Int, result: String): String = {
-    //    println(digit, result, nums)
     if (nums.isEmpty) {
       result
     } else if (digit == 0) {
@@ -28,18 +27,6 @@ object LargestNumber {
       b.compareTo(a)
     } else {
       (b + a).compareTo(a + b)
-    }
-  }
-
-  implicit class ListRemove[T](list: List[T]) {
-    def remove(elem: T): List[T] = {
-      val i = list.indexOf(elem)
-      if (i == -1) {
-        list
-      } else {
-        val (before, after) = list.splitAt(i)
-        before ++ after.drop(1)
-      }
     }
   }
 
