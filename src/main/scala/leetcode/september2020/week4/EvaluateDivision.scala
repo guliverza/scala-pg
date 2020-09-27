@@ -1,6 +1,6 @@
 package leetcode.september2020.week4
 
-import scala.collection.mutable
+import scala.collection.{immutable, mutable}
 import scala.collection.mutable.{HashMap, MultiMap, Set}
 
 object EvaluateDivision {
@@ -37,25 +37,59 @@ object EvaluateDivision {
   def calc(a: String, b: String, m: mutable.MultiMap[String, Division]): Double = {
     if (a == b && m.keySet.contains(a) && m.keySet.contains(b)) {
       1.0
-    } else if (m.entryExists(a, d => d.a == a && d.b == b || d.b == a && d.a == b)) {
-      val existing = m(a).find(d => d.a == a && d.b == b || d.b == a && d.a == b).get
-      if (existing.a == a) existing.value
-      else 1.0 / existing.value
+    } else if (m.entryExists(a, d => d.a == a && d.b == b)) {
+      m(a).find(d => d.a == a && d.b == b).get.value
+    } else if (m.entryExists(b, d => d.a == b && d.b == a)) {
+      1.0 / m(b).find(d => d.a == b && d.b == a).get.value
     } else {
       (for {
-        eqWithA <- m.getOrElse(a, Set.empty)
-        eqWithB <- m.getOrElse(b, Set.empty)
+        x <- m.getOrElse(a, mutable.Set.empty).to(LazyList)
+        y <- m.getOrElse(b, mutable.Set.empty).to(LazyList)
+        value <- calcDivision(x, y, m)
       } yield {
-        if (eqWithA.a == a && eqWithB.a == b) eqWithA.value / eqWithB.value * calc(eqWithA.b, eqWithB.b, m)
-        else if (eqWithA.b == a && eqWithB.b == b) eqWithB.value / eqWithA.value * calc(eqWithA.a, eqWithB.a, m)
-        else if (eqWithA.a == a && eqWithB.b == b) eqWithA.value * eqWithB.value * calc(eqWithA.b, eqWithB.a, m)
-        else 1.0 / (eqWithA.value * eqWithB.value) * calc(eqWithA.a, eqWithB.b, m)
-      }).find(_ != -1.0d).getOrElse(-1.0d)
+        value
+      }).headOption.getOrElse(-1.0)
+    }
+  }
+
+  def wayBack(to: Division, m: mutable.MultiMap[String, Division], path: Map[Division, Int]): Double = {
+    println("---")
+    path.foreach(println)
+    val maxT = path(to)
+    println(s"to=$to")
+    val way = (maxT to 0 by -1).map { t =>
+      val transition = path.find { case (d, tt) => tt == t }
+      println(s"transition=$transition")
+      transition.get._1
+    }.reverse
+    way.tail.fold(way.head)(_.plus(_)).value
+  }
+
+  def calcDivision(from: Division, to: Division, m: mutable.MultiMap[String, Division]): Option[Double] = {
+    val visited = m.values.flatten.map(_ -> -1).toMap + (from -> 0)
+    val path = findPath(m, visited, 0, to)
+    if (path(to) != -1) {
+      Some(wayBack(to, m, path))
+    } else {
+      None
+    }
+  }
+
+  def findPath(m: mutable.MultiMap[String, Division], a: Map[Division, Int], t: Int, destination: Division): Map[Division, Int] = {
+    val lastStep = a.collect { case (d, tt) if tt == t => d }
+    val newA = lastStep.foldLeft(a) { case (a, v) =>
+      val transitions = (m.get(v.a) ++ m.get(v.b)).flatten.toSet
+      transitions.foldLeft(a) { case (a, x) => if (a(x) == -1) a + (x -> (t + 1)) else a }
+    }
+    if (lastStep.nonEmpty && newA(destination) == -1) {
+      findPath(m, newA, t + 1, destination)
+    } else {
+      newA
     }
   }
 
   def main(args: Array[String]): Unit = {
-    println(12.0 / 2 * 3)
+    println(10 to 1 by -1)
   }
 
 }
