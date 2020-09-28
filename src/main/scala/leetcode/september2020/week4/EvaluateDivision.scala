@@ -1,7 +1,7 @@
 package leetcode.september2020.week4
 
+import scala.annotation.tailrec
 import scala.collection.mutable
-import scala.collection.mutable.{HashMap, MultiMap, Set}
 
 object EvaluateDivision {
 
@@ -25,7 +25,7 @@ object EvaluateDivision {
 
 
   def calcEquation(equations: List[List[String]], values: Array[Double], queries: List[List[String]]): Array[Double] = {
-    val m = new HashMap[String, Set[Division]] with MultiMap[String, Division]
+    val m = new mutable.HashMap[String, mutable.Set[Division]] with mutable.MultiMap[String, Division]
     equations.zip(values).foreach {
       case (a, v) =>
         val division = Division(a.head, a(1), v)
@@ -38,7 +38,7 @@ object EvaluateDivision {
   }
 
   def calc(a: String, b: String, m: mutable.MultiMap[String, Division]): Double = {
-    if (a == b && m.keySet.contains(a) && m.keySet.contains(b)) {
+    if (a == b && m.contains(a) && m.contains(b)) {
       1.0
     } else if (m.entryExists(a, d => d.a == a && d.b == b)) {
       m(a).find(d => d.a == a && d.b == b).get.value
@@ -70,6 +70,7 @@ object EvaluateDivision {
     }
   }
 
+  @tailrec
   def findPath(m: mutable.MultiMap[String, Division], a: Map[Division, Int], t: Int, destination: Division): Map[Division, Int] = {
     val lastStep = a.collect { case (d, tt) if tt == t => d }
     val newA = lastStep.foldLeft(a) { case (a, v) =>
