@@ -21,7 +21,7 @@ class EvaluateDivisionSpec extends AnyFlatSpec with should.Matchers {
       equations = List(List("x1","x2"),List("x2","x3"),List("x3","x4"),List("x4","x5")),
       values = Array(3.0,4.0,5.0,6.0),
       queries = List(List("x1","x5"),List("x5","x2"),List("x2","x4"),List("x2","x2"),List("x2","x9"),List("x9","x9")),
-    ) should be (Array(3.75000,0.40000,5.00000,0.20000))
+    ) should be (Array(360.0, 0.008333333333333333, 20.0, 1.0, -1.0, -1.0))
   }
 
 }

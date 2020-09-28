@@ -1,6 +1,6 @@
 package leetcode.september2020.week4
 
-import scala.collection.{immutable, mutable}
+import scala.collection.mutable
 import scala.collection.mutable.{HashMap, MultiMap, Set}
 
 object EvaluateDivision {
@@ -44,27 +44,17 @@ object EvaluateDivision {
       m(a).find(d => d.a == a && d.b == b).get.value
     } else if (m.entryExists(b, d => d.a == b && d.b == a)) {
       1.0 / m(b).find(d => d.a == b && d.b == a).get.value
-    } else {
+    } else if (m.contains(a) && m.contains(b)) {
       (for {
         x <- m.getOrElse(a, mutable.Set.empty).to(LazyList)
         y <- m.getOrElse(b, mutable.Set.empty).to(LazyList)
         value <- calcDivision(x, y, m, a, b)
       } yield {
-        println(s"$a/$b => $value")
         value
       }).headOption.getOrElse(-1.0)
+    } else {
+      -1.0
     }
-  }
-
-  def wayBack(to: Division, m: mutable.MultiMap[String, Division], path: Map[Division, Int]): Division = {
-    println(s"to=$to")
-    val (res, _) = ((path(to)-1) to 0 by -1).foldLeft((to, to)) { case ((res, prev), t) =>
-      val transitions = (m.get(prev.a) ++ m.get(prev.b)).flatten.toSet
-      val transition = transitions.find { x => path(x) == t }
-      (res.plus(transition.get), transition.get)
-    }
-    println(res)
-    res
   }
 
   def calcDivision(from: Division, to: Division, m: mutable.MultiMap[String, Division], a: String, b: String): Option[Double] = {
@@ -93,8 +83,13 @@ object EvaluateDivision {
     }
   }
 
-  def main(args: Array[String]): Unit = {
-    println(10 to 1 by -1)
+  def wayBack(to: Division, m: mutable.MultiMap[String, Division], path: Map[Division, Int]): Division = {
+    val (res, _) = ((path(to)-1) to 0 by -1).foldLeft((to, to)) { case ((res, prev), t) =>
+      val transitions = (m.get(prev.a) ++ m.get(prev.b)).flatten.toSet
+      val transition = transitions.find { x => path(x) == t }
+      (res.plus(transition.get), transition.get)
+    }
+    res
   }
 
 }
