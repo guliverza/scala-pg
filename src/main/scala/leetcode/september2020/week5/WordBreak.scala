@@ -1,4 +1,4 @@
-package leetcode.september2020.week4
+package leetcode.september2020.week5
 
 object WordBreak {
   def wordBreak(s: String, wordDict: List[String]): Boolean = {
