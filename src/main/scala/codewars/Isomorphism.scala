@@ -8,7 +8,7 @@ object Isomorphism {
    * for types to check, you need a function that takes a [[Nothing]],
    * you can use [[absurd]].
    */
-  def absurd[R](n: Nothing): R = ???
+  def absurd[R](n: Nothing): R = n
 
   // so, when are two type, `A` and `B`, considered equal?
   // a definition might be, it is possible to go from `A` to `B`,
@@ -89,10 +89,11 @@ object Isomorphism {
   // You need this to prove some case are impossible.
 
   // We cannot have
-  // isoUnEither[A, B, C, D]: (ISO[Either[A, B], Either[C, D]], ISO[A, C]) => ISO[B, D]
+  def isoUnEither[A, B, C, D]: (ISO[Either[A, B], Either[C, D]], ISO[A, C]) => ISO[B, D] = ???
+
   // Note that we have
   def isoEU: ISO[Either[List[Unit], Unit], Either[List[Unit], Nothing]] =
-    (e => if (e.isLeft) Left(e.left.get) else Left(List(())), e => e)
+    (e => Left(if (e.isLeft) e.left.get else List()), e => e.map(absurd))
 
   // where Unit, has 1 value, (the value is also called Unit), and Void has 0 values.
   // If we have isoUnEither,
