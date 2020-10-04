@@ -1,7 +1,7 @@
 package leetcode.september2020.week2
 
 import SumRootToLeaf.sumRootToLeaf
-import leetcode.september2020.common.TreeNode
+import common.TreeNode
 import org.scalatest._
 import flatspec._
 import matchers._

@@ -1,6 +1,6 @@
 package leetcode.september2020.week2
 
-import leetcode.september2020.common.TreeNode
+import common.TreeNode
 
 object SumRootToLeaf {
   /**

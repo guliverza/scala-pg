@@ -1,6 +1,6 @@
 package leetcode.september2020.week2
 
-import leetcode.september2020.common.Interval
+import common.Interval
 
 object Intervals {
 

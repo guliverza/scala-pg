@@ -1,4 +1,4 @@
-package leetcode.september2020.common
+package common
 
 case class TreeNode(value: Int, left: Option[TreeNode], right: Option[TreeNode]) {
   def isLeaf: Boolean = left.isEmpty && right.isEmpty
