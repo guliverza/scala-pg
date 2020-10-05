@@ -4,6 +4,32 @@ import scala.math.BigInt
 
 object Kata5 {
 
+  def factors(m: Int): String = {
+    val sqrt = math.sqrt(m).toInt
+    val (rest, divs) = pseudoPrimes.takeWhile(_ <= sqrt).foldLeft((m, List.empty[(Int, Int)])) {
+      case ((m, list), d) =>
+        val (newM, k) = factor(m, d)
+        if (k > 0) (newM, list :+ (d, k))
+        else (m, list)
+
+    }
+    val withRest = if (rest > 1) divs :+ (rest, 1) else divs
+    withRest.map { case (n, k) => if (k == 1) s"($n)" else s"($n**$k)" }.mkString("")
+  }
+
+  lazy val pseudoPrimes: LazyList[Int] = 2 #:: LazyList.from(3, 2)
+  //  lazy val primes: LazyList[Int] = 2 #:: LazyList.from(3, 2).filter(n =>
+  //    primes.takeWhile { j => j * j <= n }.forall { k => n % k > 0 });
+
+  def factor(n: Int, k: Int): (Int, Int) = {
+    if (n % k != 0) {
+      (n, 0)
+    } else {
+      val (newM, x) = factor(n / k, k)
+      (newM, x + 1)
+    }
+  }
+
   def mixbonacci(pattern: List[String], length: Int): List[BigInt] = {
     val mix = Map(
       "fib" -> new Fibo,
