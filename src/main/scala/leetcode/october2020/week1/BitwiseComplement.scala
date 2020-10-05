@@ -6,9 +6,6 @@ object BitwiseComplement {
       1
     } else {
       val zeroBits = 32 - highestBit(n)
-//      println(s"n = ${n.toBinaryString}, bit = $zeroBits, ~n = ${(~n).toBinaryString}, " +
-//        s"~n << bit = ${(~n << zeroBits).toBinaryString}, " +
-//        s"~n << bit >>> bit = ${(~n << zeroBits >>> zeroBits).toBinaryString}")
       ~n << zeroBits >>> zeroBits
     }
   }
