@@ -1,5 +1,6 @@
 package codewars
 
+import scala.collection.{BitSet, immutable, mutable}
 import scala.math.BigInt
 
 object Kata5 {
@@ -18,8 +19,6 @@ object Kata5 {
   }
 
   lazy val pseudoPrimes: LazyList[Int] = 2 #:: LazyList.from(3, 2)
-  //  lazy val primes: LazyList[Int] = 2 #:: LazyList.from(3, 2).filter(n =>
-  //    primes.takeWhile { j => j * j <= n }.forall { k => n % k > 0 });
 
   def factor(n: Int, k: Int): (Int, Int) = {
     if (n % k != 0) {
@@ -100,6 +99,70 @@ object Kata5 {
       if (!mIterator.hasNext) mIterator = mElements.iterator
       mIterator.next
     }
+  }
+
+  val TimeUnits = Seq((365 * 24 * 3600, "year"), (24 * 3600, "day"), (3600, "hour"), (60, "minute"), (1, "second"))
+
+  def formatDuration(seconds: Int): String = {
+    val (_, res) = TimeUnits.foldLeft((seconds, List.empty[(Int, String)])) {
+      case ((secondsLeft, res), (unitSize, unitName)) =>
+        (secondsLeft % unitSize, res :+ (secondsLeft / unitSize, unitName))
+    }
+    res.collect {
+      case (1, unit) => s"1 $unit"
+      case (count, unit) if count > 1 => s"$count ${unit}s"
+    } match {
+      case Nil => "now"
+      case head :: Nil => head
+      case list => list.init.mkString(", ") + " and " + list.last
+    }
+  }
+
+  def isPrime(end: Long): Boolean = {
+    val intSqrt = Math.sqrt(end).toInt
+    val lazyInts = 2 #:: LazyList.from(3, 2)
+    !lazyInts.takeWhile(_ <= intSqrt).exists(n => end % n == 0)
+  }
+
+  def gap(g: Int, m: Long, n: Long): String = {
+    println(g, m, n)
+    val primes = LazyList.from(new IterableOnce[Long] {
+      override def iterator: Iterator[Long] = new Iterator[Long] {
+        var x = m + 1 - m % 2
+
+        override def hasNext: Boolean = x <= n
+
+        override def next(): Long = {
+          val result = x; x += 2; result
+        }
+      }
+    }).filter(isPrime)
+    if (primes.isEmpty) ""
+    else primes.zip(primes.tail).find { case (p1, p2) => p2 - p1 == g }.map(_.toString()).getOrElse("")
+  }
+
+
+  def gap1(g: Int, m: Long, n: Long): String = {
+    var x = m + 1 - m % 2
+    var prevPrime: Long = -g
+    while (x <= n) {
+      if (isPrime(x)) {
+        if (x - prevPrime == g) {
+          return (prevPrime, x).toString
+        }
+        prevPrime = x
+      }
+      x += 2
+    }
+    ""
+  }
+
+  def main(args: Array[String]): Unit = {
+    println(gap(2, 3, 50))
+    println(gap(4, 100, 110))
+    val t = System.nanoTime
+    //    println(gap(1000, 1, 1000000000))
+    println(s"time ${(System.nanoTime - t) / 1000000}ms")
   }
 
 }
