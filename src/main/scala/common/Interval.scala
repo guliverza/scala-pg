@@ -7,6 +7,8 @@ case class Interval(from: Int, to: Int) {
 
   def intersects(o: Interval): Boolean = !before(o) && !after(o)
 
+  def intersection(o: Interval): Interval = Interval(math.max(from, o.from), math.min(to, o.to))
+
   def coveredBy(o: Interval): Boolean = from >= o.from && to <= o.to
 
   def asArray: Array[Int] = Array(from, to)
