@@ -5,7 +5,7 @@ object BinarySearchMatrix {
     val m = matrix.headOption.map(_.length).getOrElse(0)
     val n = matrix.length
 
-    def get(i: Int) = if (m == 1) matrix(i).head else matrix(i / m)(i % m)
+    def get(i: Int) = matrix(i / m)(i % m)
 
     @scala.annotation.tailrec
     def binSearch(from: Int, to: Int): Boolean = {
