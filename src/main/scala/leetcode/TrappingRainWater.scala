@@ -11,8 +11,8 @@ object TrappingRainWater {
       val right = height.lastIndexWhere(h => h > level)
       if (left < right) {
         val currentHeight = Math.min(height(left), height(right))
-        total += height.slice(left + 1, right).foldLeft(0) {
-          case (sum, h) => sum + Math.max(0, currentHeight - Math.max(h, level))
+        for {i <- (left + 1) until right} {
+          total += Math.max(0, currentHeight - Math.max(height(i), level))
         }
         level = currentHeight
       } else {
